@@ -1,0 +1,17 @@
+$ cargo test --offline --lib --features=test
+CWD <OpenSK>
+
+running 3 tests
+test env::crypto::ecdsa::tests::der_int_ok ... ok
+test env::vendor::test::test_vendor_response_into_cbor ... ok
+test env::vendor::test::test_vendor_configure_parameters ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Compiling sk-cbor v0.1.2 (<OpenSK>/libraries/cbor)
+   Compiling opensk v1.0.0 (<OpenSK>/libraries/opensk)
+   Compiling opensk-wasefire v0.1.0 (<OpenSK>)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.69s
+     Running unittests src/lib.rs (<whole-repository-run>/target/debug/deps/opensk_wasefire-399a94ff8cb81d65)
+
+EXIT 0

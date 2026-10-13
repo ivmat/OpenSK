@@ -22,7 +22,7 @@ external = ["RFC 8949", "RFC 7049", "CTAP 2.1 §8", "Pinned crate doc comments a
 clauses_total = 325
 claims_total = 325
 denominator = "slice"
-slice_note = "Whole public API plus the declared codec standard slice; gaps remain explicit."
+slice_note = "Whole public API plus the declared codec standard slice; gaps remain explicit. Final PR f6666ff adds 10 tests; M033 is evidenced downstream; M099 is not proposed upstream."
 
 [conformance]
 standard = "cbor-api-slice"
@@ -322,7 +322,7 @@ status = "gap"
 grade = "ungraded"
 weight = "unweighted"
 applicability = "applicable"
-applicability_reason = "Writer emits only simple values 20–23 in one byte; legacy f818 is outside RFC 8949 grammar."
+applicability_reason = "Writer emits only simple values 20–23 in one byte; legacy f818 is outside RFC 8949 grammar. no targeted mutation; no deviation observed"
 
 [[claim]]
 id = "RFC-SHORT"
@@ -2679,6 +2679,7 @@ status = "evidenced"
 grade = "probe"
 weight = "weighted"
 applicability = "applicable"
+applicability_reason = "Evidenced by 24 existing CTAP tests in libraries/opensk, including ctap::test::test_resident_process_make_credential; M033 kills the same 24 tests in all three checked configurations. This is a gap only in sk-cbor’s own suite, not in the repository; not proposed upstream."
 bounds = "bounded: the concrete fixture in writer::test::test_acceptance_m033; no all-input proof"
 
 [claim.self_verify]
@@ -2721,6 +2722,318 @@ kind = "mutation"
 expectation = "red"
 observed = "red"
 of_claim = "M033"
+
+[[claim.evidence]]
+kind = "unit-test"
+family = "dynamic"
+method = "unit-test"
+epistemic_tier = "T3"
+cases = 1
+ref = "ctap::config_command::test::test_process_set_min_pin_length_force_pin_change_explicit"
+result = "pass"
+tool = "cargo test --offline; existing OpenSK CTAP suite"
+record = "evidence/final-pr-2026-10-13/baseline-opensk-std.log"
+record_hash = "record:sha-512:8140ddf87a5fd5f0fe7b0475e1bcb80daa95a891a52f267e4cb3383a225bc2712fef596133674f9f21f6ed38692f53d057d634448e58ee6d937b6f907877e58e"
+semantics = "Existing downstream test passes unmodified and fails under M033; the 24-test failure set and other configurations are in evidence/final-pr-2026-10-13/existing-tests.json. Append is evidenced by existing repository tests; no upstream test proposed."
+
+[[claim.evidence]]
+kind = "unit-test"
+family = "dynamic"
+method = "unit-test"
+epistemic_tier = "T3"
+cases = 1
+ref = "ctap::config_command::test::test_process_set_min_pin_length"
+result = "pass"
+tool = "cargo test --offline; existing OpenSK CTAP suite"
+record = "evidence/final-pr-2026-10-13/baseline-opensk-std.log"
+record_hash = "record:sha-512:8140ddf87a5fd5f0fe7b0475e1bcb80daa95a891a52f267e4cb3383a225bc2712fef596133674f9f21f6ed38692f53d057d634448e58ee6d937b6f907877e58e"
+semantics = "Existing downstream test passes unmodified and fails under M033; the 24-test failure set and other configurations are in evidence/final-pr-2026-10-13/existing-tests.json. Append is evidenced by existing repository tests; no upstream test proposed."
+
+[[claim.evidence]]
+kind = "unit-test"
+family = "dynamic"
+method = "unit-test"
+epistemic_tier = "T3"
+cases = 1
+ref = "ctap::config_command::test::test_process_set_min_pin_length_force_pin_change_implicit"
+result = "pass"
+tool = "cargo test --offline; existing OpenSK CTAP suite"
+record = "evidence/final-pr-2026-10-13/baseline-opensk-std.log"
+record_hash = "record:sha-512:8140ddf87a5fd5f0fe7b0475e1bcb80daa95a891a52f267e4cb3383a225bc2712fef596133674f9f21f6ed38692f53d057d634448e58ee6d937b6f907877e58e"
+semantics = "Existing downstream test passes unmodified and fails under M033; the 24-test failure set and other configurations are in evidence/final-pr-2026-10-13/existing-tests.json. Append is evidenced by existing repository tests; no upstream test proposed."
+
+[[claim.evidence]]
+kind = "unit-test"
+family = "dynamic"
+method = "unit-test"
+epistemic_tier = "T3"
+cases = 1
+ref = "ctap::config_command::test::test_process_set_min_pin_length_rp_ids"
+result = "pass"
+tool = "cargo test --offline; existing OpenSK CTAP suite"
+record = "evidence/final-pr-2026-10-13/baseline-opensk-std.log"
+record_hash = "record:sha-512:8140ddf87a5fd5f0fe7b0475e1bcb80daa95a891a52f267e4cb3383a225bc2712fef596133674f9f21f6ed38692f53d057d634448e58ee6d937b6f907877e58e"
+semantics = "Existing downstream test passes unmodified and fails under M033; the 24-test failure set and other configurations are in evidence/final-pr-2026-10-13/existing-tests.json. Append is evidenced by existing repository tests; no upstream test proposed."
+
+[[claim.evidence]]
+kind = "unit-test"
+family = "dynamic"
+method = "unit-test"
+epistemic_tier = "T3"
+cases = 1
+ref = "ctap::credential_management::test::test_process_delete_credential"
+result = "pass"
+tool = "cargo test --offline; existing OpenSK CTAP suite"
+record = "evidence/final-pr-2026-10-13/baseline-opensk-std.log"
+record_hash = "record:sha-512:8140ddf87a5fd5f0fe7b0475e1bcb80daa95a891a52f267e4cb3383a225bc2712fef596133674f9f21f6ed38692f53d057d634448e58ee6d937b6f907877e58e"
+semantics = "Existing downstream test passes unmodified and fails under M033; the 24-test failure set and other configurations are in evidence/final-pr-2026-10-13/existing-tests.json. Append is evidenced by existing repository tests; no upstream test proposed."
+
+[[claim.evidence]]
+kind = "unit-test"
+family = "dynamic"
+method = "unit-test"
+epistemic_tier = "T3"
+cases = 1
+ref = "ctap::credential_management::test::test_process_enumerate_credentials_with_uv"
+result = "pass"
+tool = "cargo test --offline; existing OpenSK CTAP suite"
+record = "evidence/final-pr-2026-10-13/baseline-opensk-std.log"
+record_hash = "record:sha-512:8140ddf87a5fd5f0fe7b0475e1bcb80daa95a891a52f267e4cb3383a225bc2712fef596133674f9f21f6ed38692f53d057d634448e58ee6d937b6f907877e58e"
+semantics = "Existing downstream test passes unmodified and fails under M033; the 24-test failure set and other configurations are in evidence/final-pr-2026-10-13/existing-tests.json. Append is evidenced by existing repository tests; no upstream test proposed."
+
+[[claim.evidence]]
+kind = "unit-test"
+family = "dynamic"
+method = "unit-test"
+epistemic_tier = "T3"
+cases = 1
+ref = "ctap::credential_management::test::test_process_update_user_information"
+result = "pass"
+tool = "cargo test --offline; existing OpenSK CTAP suite"
+record = "evidence/final-pr-2026-10-13/baseline-opensk-std.log"
+record_hash = "record:sha-512:8140ddf87a5fd5f0fe7b0475e1bcb80daa95a891a52f267e4cb3383a225bc2712fef596133674f9f21f6ed38692f53d057d634448e58ee6d937b6f907877e58e"
+semantics = "Existing downstream test passes unmodified and fails under M033; the 24-test failure set and other configurations are in evidence/final-pr-2026-10-13/existing-tests.json. Append is evidenced by existing repository tests; no upstream test proposed."
+
+[[claim.evidence]]
+kind = "unit-test"
+family = "dynamic"
+method = "unit-test"
+epistemic_tier = "T3"
+cases = 1
+ref = "ctap::test::test_non_resident_process_get_assertion_with_cred_protect"
+result = "pass"
+tool = "cargo test --offline; existing OpenSK CTAP suite"
+record = "evidence/final-pr-2026-10-13/baseline-opensk-std.log"
+record_hash = "record:sha-512:8140ddf87a5fd5f0fe7b0475e1bcb80daa95a891a52f267e4cb3383a225bc2712fef596133674f9f21f6ed38692f53d057d634448e58ee6d937b6f907877e58e"
+semantics = "Existing downstream test passes unmodified and fails under M033; the 24-test failure set and other configurations are in evidence/final-pr-2026-10-13/existing-tests.json. Append is evidenced by existing repository tests; no upstream test proposed."
+
+[[claim.evidence]]
+kind = "unit-test"
+family = "dynamic"
+method = "unit-test"
+epistemic_tier = "T3"
+cases = 1
+ref = "ctap::test::test_non_resident_process_make_credential_credential_with_cred_protect"
+result = "pass"
+tool = "cargo test --offline; existing OpenSK CTAP suite"
+record = "evidence/final-pr-2026-10-13/baseline-opensk-std.log"
+record_hash = "record:sha-512:8140ddf87a5fd5f0fe7b0475e1bcb80daa95a891a52f267e4cb3383a225bc2712fef596133674f9f21f6ed38692f53d057d634448e58ee6d937b6f907877e58e"
+semantics = "Existing downstream test passes unmodified and fails under M033; the 24-test failure set and other configurations are in evidence/final-pr-2026-10-13/existing-tests.json. Append is evidenced by existing repository tests; no upstream test proposed."
+
+[[claim.evidence]]
+kind = "unit-test"
+family = "dynamic"
+method = "unit-test"
+epistemic_tier = "T3"
+cases = 1
+ref = "ctap::test::test_non_resident_process_get_assertion_with_cred_blob"
+result = "pass"
+tool = "cargo test --offline; existing OpenSK CTAP suite"
+record = "evidence/final-pr-2026-10-13/baseline-opensk-std.log"
+record_hash = "record:sha-512:8140ddf87a5fd5f0fe7b0475e1bcb80daa95a891a52f267e4cb3383a225bc2712fef596133674f9f21f6ed38692f53d057d634448e58ee6d937b6f907877e58e"
+semantics = "Existing downstream test passes unmodified and fails under M033; the 24-test failure set and other configurations are in evidence/final-pr-2026-10-13/existing-tests.json. Append is evidenced by existing repository tests; no upstream test proposed."
+
+[[claim.evidence]]
+kind = "unit-test"
+family = "dynamic"
+method = "unit-test"
+epistemic_tier = "T3"
+cases = 1
+ref = "ctap::test::test_non_resident_process_make_credential"
+result = "pass"
+tool = "cargo test --offline; existing OpenSK CTAP suite"
+record = "evidence/final-pr-2026-10-13/baseline-opensk-std.log"
+record_hash = "record:sha-512:8140ddf87a5fd5f0fe7b0475e1bcb80daa95a891a52f267e4cb3383a225bc2712fef596133674f9f21f6ed38692f53d057d634448e58ee6d937b6f907877e58e"
+semantics = "Existing downstream test passes unmodified and fails under M033; the 24-test failure set and other configurations are in evidence/final-pr-2026-10-13/existing-tests.json. Append is evidenced by existing repository tests; no upstream test proposed."
+
+[[claim.evidence]]
+kind = "unit-test"
+family = "dynamic"
+method = "unit-test"
+epistemic_tier = "T3"
+cases = 1
+ref = "ctap::test::test_non_resident_process_make_credential_with_pin"
+result = "pass"
+tool = "cargo test --offline; existing OpenSK CTAP suite"
+record = "evidence/final-pr-2026-10-13/baseline-opensk-std.log"
+record_hash = "record:sha-512:8140ddf87a5fd5f0fe7b0475e1bcb80daa95a891a52f267e4cb3383a225bc2712fef596133674f9f21f6ed38692f53d057d634448e58ee6d937b6f907877e58e"
+semantics = "Existing downstream test passes unmodified and fails under M033; the 24-test failure set and other configurations are in evidence/final-pr-2026-10-13/existing-tests.json. Append is evidenced by existing repository tests; no upstream test proposed."
+
+[[claim.evidence]]
+kind = "unit-test"
+family = "dynamic"
+method = "unit-test"
+epistemic_tier = "T3"
+cases = 1
+ref = "ctap::test::test_process_get_assertion_hmac_secret_v1"
+result = "pass"
+tool = "cargo test --offline; existing OpenSK CTAP suite"
+record = "evidence/final-pr-2026-10-13/baseline-opensk-std.log"
+record_hash = "record:sha-512:8140ddf87a5fd5f0fe7b0475e1bcb80daa95a891a52f267e4cb3383a225bc2712fef596133674f9f21f6ed38692f53d057d634448e58ee6d937b6f907877e58e"
+semantics = "Existing downstream test passes unmodified and fails under M033; the 24-test failure set and other configurations are in evidence/final-pr-2026-10-13/existing-tests.json. Append is evidenced by existing repository tests; no upstream test proposed."
+
+[[claim.evidence]]
+kind = "unit-test"
+family = "dynamic"
+method = "unit-test"
+epistemic_tier = "T3"
+cases = 1
+ref = "ctap::test::test_process_get_assertion_hmac_secret_v2"
+result = "pass"
+tool = "cargo test --offline; existing OpenSK CTAP suite"
+record = "evidence/final-pr-2026-10-13/baseline-opensk-std.log"
+record_hash = "record:sha-512:8140ddf87a5fd5f0fe7b0475e1bcb80daa95a891a52f267e4cb3383a225bc2712fef596133674f9f21f6ed38692f53d057d634448e58ee6d937b6f907877e58e"
+semantics = "Existing downstream test passes unmodified and fails under M033; the 24-test failure set and other configurations are in evidence/final-pr-2026-10-13/existing-tests.json. Append is evidenced by existing repository tests; no upstream test proposed."
+
+[[claim.evidence]]
+kind = "unit-test"
+family = "dynamic"
+method = "unit-test"
+epistemic_tier = "T3"
+cases = 1
+ref = "ctap::test::test_process_get_assertion_with_cred_blob"
+result = "pass"
+tool = "cargo test --offline; existing OpenSK CTAP suite"
+record = "evidence/final-pr-2026-10-13/baseline-opensk-std.log"
+record_hash = "record:sha-512:8140ddf87a5fd5f0fe7b0475e1bcb80daa95a891a52f267e4cb3383a225bc2712fef596133674f9f21f6ed38692f53d057d634448e58ee6d937b6f907877e58e"
+semantics = "Existing downstream test passes unmodified and fails under M033; the 24-test failure set and other configurations are in evidence/final-pr-2026-10-13/existing-tests.json. Append is evidenced by existing repository tests; no upstream test proposed."
+
+[[claim.evidence]]
+kind = "unit-test"
+family = "dynamic"
+method = "unit-test"
+epistemic_tier = "T3"
+cases = 1
+ref = "ctap::test::test_process_make_credential_cred_blob_ok"
+result = "pass"
+tool = "cargo test --offline; existing OpenSK CTAP suite"
+record = "evidence/final-pr-2026-10-13/baseline-opensk-std.log"
+record_hash = "record:sha-512:8140ddf87a5fd5f0fe7b0475e1bcb80daa95a891a52f267e4cb3383a225bc2712fef596133674f9f21f6ed38692f53d057d634448e58ee6d937b6f907877e58e"
+semantics = "Existing downstream test passes unmodified and fails under M033; the 24-test failure set and other configurations are in evidence/final-pr-2026-10-13/existing-tests.json. Append is evidenced by existing repository tests; no upstream test proposed."
+
+[[claim.evidence]]
+kind = "unit-test"
+family = "dynamic"
+method = "unit-test"
+epistemic_tier = "T3"
+cases = 1
+ref = "ctap::test::test_process_make_credential_cred_blob_too_big"
+result = "pass"
+tool = "cargo test --offline; existing OpenSK CTAP suite"
+record = "evidence/final-pr-2026-10-13/baseline-opensk-std.log"
+record_hash = "record:sha-512:8140ddf87a5fd5f0fe7b0475e1bcb80daa95a891a52f267e4cb3383a225bc2712fef596133674f9f21f6ed38692f53d057d634448e58ee6d937b6f907877e58e"
+semantics = "Existing downstream test passes unmodified and fails under M033; the 24-test failure set and other configurations are in evidence/final-pr-2026-10-13/existing-tests.json. Append is evidenced by existing repository tests; no upstream test proposed."
+
+[[claim.evidence]]
+kind = "unit-test"
+family = "dynamic"
+method = "unit-test"
+epistemic_tier = "T3"
+cases = 1
+ref = "ctap::test::test_process_get_next_assertion_not_allowed"
+result = "pass"
+tool = "cargo test --offline; existing OpenSK CTAP suite"
+record = "evidence/final-pr-2026-10-13/baseline-opensk-std.log"
+record_hash = "record:sha-512:8140ddf87a5fd5f0fe7b0475e1bcb80daa95a891a52f267e4cb3383a225bc2712fef596133674f9f21f6ed38692f53d057d634448e58ee6d937b6f907877e58e"
+semantics = "Existing downstream test passes unmodified and fails under M033; the 24-test failure set and other configurations are in evidence/final-pr-2026-10-13/existing-tests.json. Append is evidenced by existing repository tests; no upstream test proposed."
+
+[[claim.evidence]]
+kind = "unit-test"
+family = "dynamic"
+method = "unit-test"
+epistemic_tier = "T3"
+cases = 1
+ref = "ctap::test::test_process_make_credential_hmac_secret_resident_key"
+result = "pass"
+tool = "cargo test --offline; existing OpenSK CTAP suite"
+record = "evidence/final-pr-2026-10-13/baseline-opensk-std.log"
+record_hash = "record:sha-512:8140ddf87a5fd5f0fe7b0475e1bcb80daa95a891a52f267e4cb3383a225bc2712fef596133674f9f21f6ed38692f53d057d634448e58ee6d937b6f907877e58e"
+semantics = "Existing downstream test passes unmodified and fails under M033; the 24-test failure set and other configurations are in evidence/final-pr-2026-10-13/existing-tests.json. Append is evidenced by existing repository tests; no upstream test proposed."
+
+[[claim.evidence]]
+kind = "unit-test"
+family = "dynamic"
+method = "unit-test"
+epistemic_tier = "T3"
+cases = 1
+ref = "ctap::test::test_process_make_credential_hmac_secret"
+result = "pass"
+tool = "cargo test --offline; existing OpenSK CTAP suite"
+record = "evidence/final-pr-2026-10-13/baseline-opensk-std.log"
+record_hash = "record:sha-512:8140ddf87a5fd5f0fe7b0475e1bcb80daa95a891a52f267e4cb3383a225bc2712fef596133674f9f21f6ed38692f53d057d634448e58ee6d937b6f907877e58e"
+semantics = "Existing downstream test passes unmodified and fails under M033; the 24-test failure set and other configurations are in evidence/final-pr-2026-10-13/existing-tests.json. Append is evidenced by existing repository tests; no upstream test proposed."
+
+[[claim.evidence]]
+kind = "unit-test"
+family = "dynamic"
+method = "unit-test"
+epistemic_tier = "T3"
+cases = 1
+ref = "ctap::test::test_process_make_credential_min_pin_length"
+result = "pass"
+tool = "cargo test --offline; existing OpenSK CTAP suite"
+record = "evidence/final-pr-2026-10-13/baseline-opensk-std.log"
+record_hash = "record:sha-512:8140ddf87a5fd5f0fe7b0475e1bcb80daa95a891a52f267e4cb3383a225bc2712fef596133674f9f21f6ed38692f53d057d634448e58ee6d937b6f907877e58e"
+semantics = "Existing downstream test passes unmodified and fails under M033; the 24-test failure set and other configurations are in evidence/final-pr-2026-10-13/existing-tests.json. Append is evidenced by existing repository tests; no upstream test proposed."
+
+[[claim.evidence]]
+kind = "unit-test"
+family = "dynamic"
+method = "unit-test"
+epistemic_tier = "T3"
+cases = 1
+ref = "ctap::test::test_process_make_credential_with_pin_and_uv_v1"
+result = "pass"
+tool = "cargo test --offline; existing OpenSK CTAP suite"
+record = "evidence/final-pr-2026-10-13/baseline-opensk-std.log"
+record_hash = "record:sha-512:8140ddf87a5fd5f0fe7b0475e1bcb80daa95a891a52f267e4cb3383a225bc2712fef596133674f9f21f6ed38692f53d057d634448e58ee6d937b6f907877e58e"
+semantics = "Existing downstream test passes unmodified and fails under M033; the 24-test failure set and other configurations are in evidence/final-pr-2026-10-13/existing-tests.json. Append is evidenced by existing repository tests; no upstream test proposed."
+
+[[claim.evidence]]
+kind = "unit-test"
+family = "dynamic"
+method = "unit-test"
+epistemic_tier = "T3"
+cases = 1
+ref = "ctap::test::test_process_make_credential_with_pin_and_uv_v2"
+result = "pass"
+tool = "cargo test --offline; existing OpenSK CTAP suite"
+record = "evidence/final-pr-2026-10-13/baseline-opensk-std.log"
+record_hash = "record:sha-512:8140ddf87a5fd5f0fe7b0475e1bcb80daa95a891a52f267e4cb3383a225bc2712fef596133674f9f21f6ed38692f53d057d634448e58ee6d937b6f907877e58e"
+semantics = "Existing downstream test passes unmodified and fails under M033; the 24-test failure set and other configurations are in evidence/final-pr-2026-10-13/existing-tests.json. Append is evidenced by existing repository tests; no upstream test proposed."
+
+[[claim.evidence]]
+kind = "unit-test"
+family = "dynamic"
+method = "unit-test"
+epistemic_tier = "T3"
+cases = 1
+ref = "ctap::test::test_resident_process_make_credential"
+result = "pass"
+tool = "cargo test --offline; existing OpenSK CTAP suite"
+record = "evidence/final-pr-2026-10-13/baseline-opensk-std.log"
+record_hash = "record:sha-512:8140ddf87a5fd5f0fe7b0475e1bcb80daa95a891a52f267e4cb3383a225bc2712fef596133674f9f21f6ed38692f53d057d634448e58ee6d937b6f907877e58e"
+semantics = "Existing downstream test passes unmodified and fails under M033; the 24-test failure set and other configurations are in evidence/final-pr-2026-10-13/existing-tests.json. Append is evidenced by existing repository tests; no upstream test proposed."
 
 [[claim]]
 id = "M034"
@@ -6243,6 +6556,7 @@ status = "evidenced"
 grade = "probe"
 weight = "weighted"
 applicability = "applicable"
+applicability_reason = "Not proposed upstream: M099 survives the codec suite, but macros.rs:29 requires keys in “increasing order”, without saying “strictly”, and destructure_cbor_map! runs this assertion only under cfg(test). The package probe records the current implementation, not a documented strict-key contract."
 bounds = "bounded: the concrete fixture in macros::test::test_acceptance_m099; no all-input proof"
 
 [claim.self_verify]
@@ -6794,6 +7108,7 @@ status = "evidenced"
 grade = "ungraded"
 weight = "unweighted"
 applicability = "applicable"
+applicability_reason = "Evidenced by 24 existing CTAP tests in libraries/opensk, including ctap::test::test_resident_process_make_credential; M033 kills the same 24 tests in all three checked configurations. This is a gap only in sk-cbor’s own suite, not in the repository; not proposed upstream."
 
 [[claim.evidence]]
 kind = "unit-test"
@@ -6819,6 +7134,7 @@ status = "evidenced"
 grade = "ungraded"
 weight = "unweighted"
 applicability = "applicable"
+applicability_reason = "Evidenced by 24 existing CTAP tests in libraries/opensk, including ctap::test::test_resident_process_make_credential; M033 kills the same 24 tests in all three checked configurations. This is a gap only in sk-cbor’s own suite, not in the repository; not proposed upstream."
 
 [[claim.evidence]]
 kind = "unit-test"
@@ -8278,6 +8594,7 @@ status = "evidenced"
 grade = "ungraded"
 weight = "unweighted"
 applicability = "applicable"
+applicability_reason = "Not proposed upstream: M099 survives the codec suite, but macros.rs:29 requires keys in “increasing order”, without saying “strictly”, and destructure_cbor_map! runs this assertion only under cfg(test). The package probe records the current implementation, not a documented strict-key contract."
 
 [[claim.evidence]]
 kind = "unit-test"

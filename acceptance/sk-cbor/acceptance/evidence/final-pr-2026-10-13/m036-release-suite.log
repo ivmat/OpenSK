@@ -1,0 +1,114 @@
+$ cargo test --offline --lib --release
+CWD <replay>/mutant-cbor
+
+running 89 tests
+test macros::test::test_cbor_array_vec_bytes ... ok
+test macros::test::test_cbor_array ... ok
+test macros::test::test_cbor_int_literals ... ok
+test macros::test::test_assert_sorted_keys_duplicate - should panic ... ok
+test macros::test::test_cbor_array_vec_empty ... ok
+test macros::test::test_cbor_array_vec_int ... ok
+test macros::test::test_cbor_bool ... ok
+test macros::test::test_cbor_array_vec_text ... ok
+test macros::test::test_cbor_int_negative ... ok
+test macros::test::test_cbor_int_unsigned ... ok
+test macros::test::test_cbor_map ... ok
+test macros::test::test_cbor_map_collection_empty ... ok
+test macros::test::test_cbor_map_collection_foo ... ok
+test macros::test::test_cbor_map_options ... ok
+test macros::test::test_cbor_simple_values ... ok
+test macros::test::test_destructure_cbor_map_missing ... ok
+test macros::test::test_destructure_cbor_map_partial ... ok
+test macros::test::test_destructure_cbor_map_simple ... ok
+test macros::test::test_destructure_unsorted_cbor_map ... ok
+test reader::test::test_read_array ... ok
+test macros::test::test_destructure_cbor_map_unsorted - should panic ... ok
+test reader::test::test_read_byte_string ... ok
+test reader::test::test_read_byte_string_with_length_beyond_usize ... ok
+test reader::test::test_read_duplicate_key_error ... ok
+test reader::test::test_read_extraneous_cbor_data_error ... ok
+test reader::test::test_read_default_nesting_boundary ... ok
+test reader::test::test_read_incomplete_cbor_data_error ... ok
+test reader::test::test_read_incorrect_string_encoding_error ... ok
+test reader::test::test_read_integer_out_of_range ... ok
+test reader::test::test_read_map ... ok
+test reader::test::test_read_map_with_array ... ok
+test reader::test::test_read_map_with_byte_string_keys ... ok
+test reader::test::test_read_map_with_negative_keys ... ok
+test reader::test::test_read_map_with_text_string_keys ... ok
+test reader::test::test_read_map_with_unsigned_keys ... ok
+test reader::test::test_read_negative ... ok
+test reader::test::test_read_nested_map ... ok
+test reader::test::test_read_out_of_order_key_error ... ok
+test reader::test::test_read_nested_unlimited ... ok
+test reader::test::test_read_super_long_content_dont_crash ... ok
+test reader::test::test_read_simple_value ... ok
+test reader::test::test_read_tagged ... ok
+test reader::test::test_read_tagged_nesting_limit ... ok
+test reader::test::test_read_text_string ... ok
+test reader::test::test_read_text_string_with_invalid_byte_sequence_after_nul ... ok
+test reader::test::test_read_text_string_with_length_beyond_usize ... ok
+test reader::test::test_read_text_string_with_nul ... ok
+test reader::test::test_read_too_much_nesting_error ... ok
+test reader::test::test_read_unknown_additional_info_error ... ok
+test reader::test::test_read_unsigned ... ok
+test reader::test::test_read_unsigned_max ... ok
+test reader::test::test_read_unsigned_non_minimum_byte_length ... ok
+test reader::test::test_read_unsupported_floating_point_numbers ... ok
+test reader::test::test_read_unsupported_simple_type ... ok
+test values::test::test_extract_array ... ok
+test values::test::test_extract_bool ... ok
+test values::test::test_duplicate_map_key - should panic ... ok
+test values::test::test_extract_integer ... ok
+test values::test::test_extract_byte_string ... ok
+test values::test::test_extract_integer_limits ... ok
+test values::test::test_extract_map ... ok
+test values::test::test_extract_null ... ok
+test values::test::test_extract_tag ... ok
+test values::test::test_extract_text_string ... ok
+test values::test::test_extract_undefined ... ok
+test values::test::test_extract_unsigned ... ok
+test values::test::test_extract_unsigned_limits ... ok
+test values::test::test_value_ordering ... ok
+test values::test::test_value_ordering_array_tail ... ok
+test values::test::test_value_ordering_map_tail ... ok
+test values::test::test_value_ordering_tag_content ... ok
+test writer::test::test_write_array ... ok
+test writer::test::test_write_byte_string ... ok
+test writer::test::test_write_default_nesting_boundary ... ok
+test writer::test::test_write_map ... ok
+test writer::test::test_write_map_sorted ... ok
+test writer::test::test_write_map_with_array ... ok
+test writer::test::test_write_negative ... ok
+test writer::test::test_write_nested_map ... ok
+test writer::test::test_write_nested_map_levels ... ok
+test writer::test::test_write_overly_nested ... ok
+test writer::test::test_write_nested_unlimited ... FAILED
+test writer::test::test_write_single_levels ... ok
+test writer::test::test_write_tagged ... ok
+test writer::test::test_write_simple ... ok
+test writer::test::test_write_tagged_nesting_limit ... ok
+test writer::test::test_write_text_string ... ok
+test writer::test::test_write_unbalanced_nested_containers ... ok
+test writer::test::test_write_unsigned ... ok
+
+failures:
+
+---- writer::test::test_write_nested_unlimited stdout ----
+
+thread 'writer::test::test_write_nested_unlimited' (43802623) panicked at src/writer.rs:553:9:
+assertion `left == right` failed
+  left: Err(TooMuchNesting)
+ right: Ok(())
+
+
+failures:
+    writer::test::test_write_nested_unlimited
+
+test result: FAILED. 88 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+    Finished `release` profile [optimized] target(s) in 0.00s
+     Running unittests src/lib.rs (<replay>/mutation-target/release/deps/sk_cbor-6e63099119ff3362)
+error: test failed, to rerun pass `--lib`
+
+EXIT 101

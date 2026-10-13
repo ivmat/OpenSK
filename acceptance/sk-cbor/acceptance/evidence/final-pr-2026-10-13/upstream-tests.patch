@@ -1,0 +1,152 @@
+diff --git a/libraries/cbor/src/reader.rs b/libraries/cbor/src/reader.rs
+index a1cac54..0b2e108 100644
+--- a/libraries/cbor/src/reader.rs
++++ b/libraries/cbor/src/reader.rs
+@@ -271,6 +271,15 @@ mod test {
+         }
+     }
+ 
++    #[test]
++    fn test_read_unsigned_max() {
++        // RFC 8949 Appendix A: 18446744073709551615.
++        assert_eq!(
++            read(&[0x1B, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]),
++            Ok(cbor_unsigned!(u64::MAX))
++        );
++    }
++
+     #[test]
+     fn test_read_unsigned_non_minimum_byte_length() {
+         let encodings = vec![
+@@ -622,6 +631,19 @@ mod test {
+         }
+     }
+ 
++    #[test]
++    fn test_read_tagged_nesting_limit() {
++        // tag 0 containing 0
++        assert_eq!(
++            read_nested(&[0xc0, 0x00], Some(0)),
++            Err(DecoderError::TooMuchNesting)
++        );
++        assert_eq!(
++            read_nested(&[0xc0, 0x00], Some(1)),
++            Ok(cbor_tagged!(0, cbor_int!(0)))
++        );
++    }
++
+     #[test]
+     fn test_read_integer_out_of_range() {
+         let cases = vec![
+@@ -732,6 +754,26 @@ mod test {
+         assert!(reader.decode_complete_data_item(Some(2)).is_ok());
+     }
+ 
++    #[test]
++    fn test_read_default_nesting_boundary() {
++        let mut bytes = vec![0x81; 127]; // 127 nested one-element arrays
++        bytes.push(0x00); // 0
++        assert!(read(&bytes).is_ok());
++        bytes.insert(0, 0x81); // one more one-element array
++        assert_eq!(read(&bytes), Err(DecoderError::TooMuchNesting));
++    }
++
++    #[test]
++    fn test_read_nested_unlimited() {
++        let mut value = cbor_int!(0);
++        for _ in 0..128 {
++            value = cbor_array![value];
++        }
++        let mut bytes = vec![0x81; 128]; // 128 nested one-element arrays
++        bytes.push(0x00); // 0
++        assert_eq!(read_nested(&bytes, None), Ok(value));
++    }
++
+     #[test]
+     fn test_read_out_of_order_key_error() {
+         let cases = vec![
+diff --git a/libraries/cbor/src/values.rs b/libraries/cbor/src/values.rs
+index da08049..87a5b1b 100644
+--- a/libraries/cbor/src/values.rs
++++ b/libraries/cbor/src/values.rs
+@@ -735,4 +735,19 @@ mod test {
+         assert!(cbor_array![] < cbor_bool!(false));
+         assert!(cbor_tagged!(1, cbor_text!("s")) < cbor_bool!(false));
+     }
++
++    #[test]
++    fn test_value_ordering_array_tail() {
++        assert!(cbor_array![0, 1] < cbor_array![0, 2]);
++    }
++
++    #[test]
++    fn test_value_ordering_map_tail() {
++        assert!(cbor_map! {0 => 0, 1 => 1} < cbor_map! {0 => 0, 1 => 2});
++    }
++
++    #[test]
++    fn test_value_ordering_tag_content() {
++        assert!(cbor_tagged!(1, cbor_unsigned!(0)) < cbor_tagged!(1, cbor_unsigned!(1)));
++    }
+ }
+diff --git a/libraries/cbor/src/writer.rs b/libraries/cbor/src/writer.rs
+index 82f2aad..10c2432 100644
+--- a/libraries/cbor/src/writer.rs
++++ b/libraries/cbor/src/writer.rs
+@@ -400,6 +400,21 @@ mod test {
+         }
+     }
+ 
++    #[test]
++    fn test_write_tagged_nesting_limit() {
++        let mut encoded = Vec::new();
++        assert_eq!(
++            write_nested(cbor_tagged!(0, cbor_int!(0)), &mut encoded, Some(0)),
++            Err(EncoderError::TooMuchNesting)
++        );
++        let mut encoded = Vec::new();
++        assert_eq!(
++            write_nested(cbor_tagged!(0, cbor_int!(0)), &mut encoded, Some(1)),
++            Ok(())
++        );
++        assert_eq!(encoded, vec![0xc0, 0x00]);
++    }
++
+     #[test]
+     fn test_write_simple() {
+         let cases = vec![
+@@ -507,4 +522,34 @@ mod test {
+         writer = Writer::new(&mut buf);
+         assert!(writer.encode_cbor(cbor_map, Some(4)).is_err());
+     }
++
++    #[test]
++    fn test_write_default_nesting_boundary() {
++        let mut encoded = Vec::new();
++        let mut value = cbor_int!(0);
++        for _ in 0..127 {
++            value = cbor_array![value];
++        }
++        assert_eq!(write(value.clone(), &mut encoded), Ok(()));
++        let mut bytes = vec![0x81; 127]; // 127 nested one-element arrays
++        bytes.push(0x00); // 0
++        assert_eq!(encoded, bytes);
++        assert_eq!(
++            write(cbor_array![value], &mut encoded),
++            Err(EncoderError::TooMuchNesting)
++        );
++    }
++
++    #[test]
++    fn test_write_nested_unlimited() {
++        let mut value = cbor_int!(0);
++        for _ in 0..128 {
++            value = cbor_array![value];
++        }
++        let mut bytes = vec![0x81; 128]; // 128 nested one-element arrays
++        bytes.push(0x00); // 0
++        let mut encoded = Vec::new();
++        assert_eq!(write_nested(value, &mut encoded, None), Ok(()));
++        assert_eq!(encoded, bytes);
++    }
+ }

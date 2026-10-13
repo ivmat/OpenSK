@@ -5,13 +5,13 @@ import os,json,re,subprocess,time,sys,hashlib,datetime
 from prepare import ROOT,A,W,P,H
 from reference import parse,encode,representable,Invalid,structure
 from generate_tests import corpus
-from layout import REPO,COMMIT
+from layout import REPO,COMMIT,UPSTREAM_REPO
 
 E=A/'evidence/gen'
 ENV={**os.environ,'CARGO_HOME':str(ROOT/'.cargo-home'),'CARGO_TARGET_DIR':str(ROOT/'target-acceptance'),'RUSTFLAGS':'--cap-lints warn','SK_CBOR_MUTANT':'0','PYTHONDONTWRITEBYTECODE':'1'}
 
 def portable(text):
-    text=text.replace(str(ROOT),'<workspace>').replace(str(REPO),'<subject-repository>')
+    text=text.replace(str(UPSTREAM_REPO),'<upstream-repository>').replace(str(ROOT),'<workspace>').replace(str(REPO),'<subject-repository>')
     validator=os.environ.get('ACCEPTANCE_FORMAT')
     if validator: text=text.replace(str(Path(validator).resolve()),'$ACCEPTANCE_FORMAT')
     # Rustdoc panic location may contain a toolchain absolute source path.

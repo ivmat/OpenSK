@@ -90,5 +90,6 @@
     "conformance profile PASS"
   ],
   "path_grep": "Exported-file user-path grep empty",
-  "result": "PASS"
+  "result": "PASS",
+  "scope_note": "Historical 2026-10-09 fork-layout replay of the earlier 12-test patch; current final PR has 10 tests. Final patch receipts: evidence/final-pr-2026-10-13/receipt.json; current package checks: evidence/gen/upstream-review.json and validate-*.txt."
 }

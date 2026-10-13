@@ -48,7 +48,7 @@ def main():
     captured=re.search(r'captured_at: (.+)',baseline)[1]
     assert datetime.datetime.fromisoformat(captured)>=datetime.datetime.fromisoformat(declaration['declared_at'])
     integrity()
-    summary={'provenance':H,'public_surface_rows':len(rows),'explicit_public_gaps':sum(r['gap'] for r in rows),'enumerated_source_declarations':len(expected),'missing_source_rows':[],'missing_cases':sum(m['missing'] for m in mutations),'all_probes_red':True,'frozen_declaration_verified':True,'patch_applies':True,'patch_tests':'PR: 90 unit tests and 5 doc examples; deferred: 82 unit tests and 5 doc examples, at both commits','validators':['check_acceptance.py --strict --strict-weight','check_core.py --strict --strict-weight','conformance profile checker'],'result':'PASS'}
+    summary={'provenance':H,'public_surface_rows':len(rows),'explicit_public_gaps':sum(r['gap'] for r in rows),'enumerated_source_declarations':len(expected),'missing_source_rows':[],'missing_cases':sum(m['missing'] for m in mutations),'all_probes_red':True,'frozen_declaration_verified':True,'patch_applies':True,'patch_tests':'PR: 88 unit tests and 5 doc examples; deferred: 82 unit tests and 5 doc examples, at both commits','validators':['check_acceptance.py --strict --strict-weight','check_core.py --strict --strict-weight','conformance profile checker'],'result':'PASS'}
     (A/'evidence/gen/verification.json').write_text(json.dumps(summary,indent=2)+'\n')
     print('PUBLIC API, MUTATION PAIRS, FROZEN APPLICABILITY, PATCH, INTEGRITY AND VALIDATORS PASS',flush=True)
 

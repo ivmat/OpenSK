@@ -1,0 +1,71 @@
+[
+  {
+    "label": "baseline-opensk-std",
+    "command": "cargo test --offline --no-default-features --features=std",
+    "cwd": "<OpenSK>/libraries/opensk",
+    "exit": 0,
+    "log": "baseline-opensk-std.log",
+    "seconds": 1.54,
+    "results": [
+      "test result: ok. 353 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.43s",
+      "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+    ],
+    "failed_tests": [],
+    "errors": []
+  },
+  {
+    "label": "baseline-opensk-config",
+    "command": "cargo test --offline --features=std,config_command,ctap1",
+    "cwd": "<OpenSK>/libraries/opensk",
+    "exit": 0,
+    "log": "baseline-opensk-config.log",
+    "seconds": 1.76,
+    "results": [
+      "test result: ok. 374 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.64s",
+      "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+    ],
+    "failed_tests": [],
+    "errors": []
+  },
+  {
+    "label": "baseline-opensk-all",
+    "command": "cargo test --offline --all-features",
+    "cwd": "<OpenSK>/libraries/opensk",
+    "exit": 0,
+    "log": "baseline-opensk-all.log",
+    "seconds": 1.98,
+    "results": [
+      "test result: ok. 426 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.83s",
+      "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+    ],
+    "failed_tests": [],
+    "errors": []
+  },
+  {
+    "label": "baseline-root",
+    "command": "cargo test --offline --lib --features=test",
+    "cwd": "<OpenSK>",
+    "exit": 0,
+    "log": "baseline-root.log",
+    "seconds": 0.06,
+    "results": [
+      "test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+    ],
+    "failed_tests": [],
+    "errors": []
+  },
+  {
+    "label": "baseline-cbor-existing",
+    "command": "cargo test --offline --manifest-path=libraries/cbor/Cargo.toml -- --skip reader::test::test_read_unsigned_max --skip reader::test::test_read_default_nesting_boundary --skip reader::test::test_read_nested_unlimited --skip reader::test::test_read_tagged_nesting_limit --skip writer::test::test_write_appends --skip writer::test::test_write_default_nesting_boundary --skip writer::test::test_write_nested_unlimited --skip writer::test::test_write_tagged_nesting_limit --skip values::test::test_value_ordering_array_tail --skip values::test::test_value_ordering_map_tail --skip values::test::test_value_ordering_tag_content --skip macros::test::test_assert_sorted_keys_duplicate",
+    "cwd": "<OpenSK>",
+    "exit": 0,
+    "log": "baseline-cbor-existing.log",
+    "seconds": 0.93,
+    "results": [
+      "test result: ok. 78 passed; 0 failed; 0 ignored; 0 measured; 12 filtered out; finished in 0.00s",
+      "test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.84s"
+    ],
+    "failed_tests": [],
+    "errors": []
+  }
+]

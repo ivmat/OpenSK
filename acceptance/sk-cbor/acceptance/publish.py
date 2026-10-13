@@ -10,7 +10,8 @@ def files():
     for directory in ['acceptance/standards','acceptance/evidence','acceptance/extra-tests/src','known','spec']:
         paths += [p for p in (ROOT/directory).rglob('*') if p.is_file() and '__pycache__' not in p.parts]
     paths += [A/'extra-tests/Cargo.toml',A/'extra-tests/Cargo.lock']
-    return sorted(set(p.relative_to(ROOT).as_posix() for p in paths))
+    local_only={'acceptance/evidence/final-pr-2026-10-13/refresh-review.json'}
+    return sorted(set(p.relative_to(ROOT).as_posix() for p in paths)-local_only)
 
 def main():
     parser=argparse.ArgumentParser(); parser.add_argument('--copy',type=Path)
@@ -18,13 +19,15 @@ def main():
     paths=files()
     text='<!-- '+H+' -->\n# Fork publication manifest\n\n'
     text+=f'Copy these {len(paths)} files into `acceptance/sk-cbor/` in an OpenSK fork, on a branch based on the pinned subject commit. Paths below are relative to the package root.\n\n'
-    text+='Excluded: `_run/`, all `BRIEF*.md`, `published/`, `work-sk-cbor/`, generated source checkouts, targets, `.cargo-home`, validator checkouts, caches and git metadata. The enclosing fork supplies `libraries/cbor` and its history. Runtime copies and executables are regenerated offline.\n\n'
+    text+='Excluded: `_run/`, all `BRIEF*.md`, `published/`, `work-sk-cbor/`, generated source checkouts, targets, `.cargo-home`, validator checkouts, caches, git metadata and the local-only refresh review receipt. The enclosing fork supplies `libraries/cbor` and its history. Runtime copies and executables are regenerated offline.\n\n'
     text+='`python3 acceptance/publish.py` regenerates this list. `python3 acceptance/publish.py --copy <fork>/acceptance/sk-cbor` copies exactly these files. Package files are Apache-2.0 OR MIT; third-party texts retain their original licences.\n\n```text\n'+'\n'.join(paths)+'\n```\n'
     (ROOT/'PUBLISH.md').write_text(text)
     # Run precisely the requested grep over the actual listed files.
     result=subprocess.run(['grep','-rn','/'+'Users/',*paths],cwd=ROOT,capture_output=True,text=True)
     assert result.returncode==1 and not result.stdout,(result.returncode,result.stdout)
     if args.copy:
+        private_review=args.copy/'acceptance/evidence/final-pr-2026-10-13/refresh-review.json'
+        if private_review.exists(): private_review.unlink()
         for relative in paths:
             dest=args.copy/relative; dest.parent.mkdir(parents=True,exist_ok=True)
             shutil.copy2(ROOT/relative,dest)

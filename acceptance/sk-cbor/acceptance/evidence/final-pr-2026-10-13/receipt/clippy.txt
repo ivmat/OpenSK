@@ -1,0 +1,2 @@
+    Checking sk-cbor v0.1.2 (<checkout of f6666ff>/libraries/cbor)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.12s

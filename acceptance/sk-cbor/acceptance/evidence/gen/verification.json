@@ -8,11 +8,15 @@
   "all_probes_red": true,
   "frozen_declaration_verified": true,
   "patch_applies": true,
-  "patch_tests": "PR: 90 unit tests and 5 doc examples; deferred: 82 unit tests and 5 doc examples, at both commits",
+  "patch_tests": "PR: 88 unit tests and 5 doc examples; deferred: 82 unit tests and 5 doc examples, at both commits",
   "validators": [
     "check_acceptance.py --strict --strict-weight",
     "check_core.py --strict --strict-weight",
     "conformance profile checker"
   ],
-  "result": "PASS"
+  "result": "PASS",
+  "pr_commit": "f6666ff1ea5fb8007a9608f6ee67baf9c8f89fbe",
+  "package_check_date": "2026-10-13",
+  "check_scope": "Final patch checks and the three pinned validators rerun offline. Original API/mutation/declaration receipts and subject integrity checked; full mutation/comparison pipeline not rerun.",
+  "final_replay_mutants_per_profile": 12
 }

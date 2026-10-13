@@ -28,8 +28,8 @@ Every row is present in the whole-API acceptance file. Namespace, signature and 
 | API-021 | `reader::DecoderError::OutOfRangeIntegerValue` | Shared behavioural probes M003 |
 | API-022 | `reader::DecoderError: Debug` | GAP: Derived formatting/equality is used by assertions but has no independent targeted mutation. |
 | API-023 | `reader::DecoderError: PartialEq` | GAP: Derived formatting/equality is used by assertions but has no independent targeted mutation. |
-| API-024 | `writer::write` | Shared behavioural probes M033, M034, M035, M036, M037, M038, M039, M040, M041, M042, M043, M044, M045, M046, M047, M048 |
-| API-025 | `writer::write_nested` | Shared behavioural probes M033, M034, M035, M036, M037, M038, M039, M040, M041, M042, M043, M044, M045, M046, M047, M048 |
+| API-024 | `writer::write` | Shared behavioural probes M033, M034, M035, M036, M037, M038, M039, M040, M041, M042, M043, M044, M045, M046, M047, M048. Evidenced by 24 existing CTAP tests in libraries/opensk, including ctap::test::test_resident_process_make_credential; M033 kills the same 24 tests in all three checked configurations. This is a gap only in sk-cbor’s own suite, not in the repository; not proposed upstream. |
+| API-025 | `writer::write_nested` | Shared behavioural probes M033, M034, M035, M036, M037, M038, M039, M040, M041, M042, M043, M044, M045, M046, M047, M048. Evidenced by 24 existing CTAP tests in libraries/opensk, including ctap::test::test_resident_process_make_credential; M033 kills the same 24 tests in all three checked configurations. This is a gap only in sk-cbor’s own suite, not in the repository; not proposed upstream. |
 | API-026 | `writer::EncoderError` | GAP: Public error enum. Branch tests assess reachable errors. Debug formatting and enum representation have no targeted control. |
 | API-027 | `writer::EncoderError::TooMuchNesting` | Shared behavioural probes M034 |
 | API-028 | `writer::EncoderError::DuplicateMapKey` | GAP: This variant is not reachable through the current safe public API; no production branch can be controlled. |
@@ -96,7 +96,7 @@ Every row is present in the whole-API acceptance file. Namespace, signature and 
 | API-089 | `values::IntoCborValueOption for Option<T>` | Shared behavioural probes M096 |
 | API-090 | `macros::destructure_cbor_map_peek_value` | Shared behavioural probes M097, M098 |
 | API-091 | `destructure_cbor_map!` | Shared behavioural probes M098 |
-| API-092 | `assert_sorted_keys!` | Shared behavioural probes M099 |
+| API-092 | `assert_sorted_keys!` | Shared behavioural probes M099. Not proposed upstream: M099 survives the codec suite, but macros.rs:29 requires keys in “increasing order”, without saying “strictly”, and destructure_cbor_map! runs this assertion only under cfg(test). The package probe records the current implementation, not a documented strict-key contract. |
 | API-093 | `cbor_map!` | Shared behavioural probes M058 |
 | API-094 | `cbor_map_options!` | Shared behavioural probes M100 |
 | API-095 | `cbor_map_collection!` | Shared behavioural probes M058 |

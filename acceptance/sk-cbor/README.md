@@ -3,11 +3,11 @@
 
 The pinned source at `f3ee26dd824205a760aadba8199aa93d6d7d0d8a` was checked offline with Rust 1.99.0. The crate version label is 0.1.2, but the subject is the pinned source snapshot. The result is 19 surviving mutants in sk-cbor’s own unit and doc tests from 100 runtime mutants, and no reproduced normative wire deviation in the declared subset.
 
-[Missing tests](acceptance/MISSING-TESTS.md) gives each green shipped-suite run, its red proposed probe, and copyable Rust tests. [The patch](acceptance/upstream-tests.patch) applies to the pinned checkout. It adds 12 boundary, depth, append, ordering and assertion-strictness tests. [The deferred patch](acceptance/deferred-tests.patch) keeps four consolidated conversion and vector tests in the package. [Findings](acceptance/FINDINGS.md) gives the conformance classifications and documentation limits.
+[Surviving mutants and dispositions](acceptance/MISSING-TESTS.md) gives each green codec-suite run, its red package probe, and its upstream disposition. [The patch](acceptance/upstream-tests.patch) applies to the pinned checkout. It is the exact `git diff 79e85b9..f6666ff` and adds 10 boundary, depth and ordering tests. Append (M033) is evidenced by existing downstream tests; duplicate-key strictness (M099) is not proposed upstream. [The deferred patch](acceptance/deferred-tests.patch) keeps four consolidated conversion and vector tests in the package. [Findings](acceptance/FINDINGS.md) gives the conformance classifications and documentation limits.
 
 The package’s own files are licensed under **Apache-2.0 OR MIT**; see [LICENSE-APACHE](LICENSE-APACHE) and [LICENSE-MIT](LICENSE-MIT). Third-party files, including OpenSK sources, RFC texts and test vectors, retain their own licences.
 
-[Upstream review](acceptance/UPSTREAM-REVIEW.md) records formatting, the fetched develop commit and the corrected test count. [PR text](acceptance/UPSTREAM-PR.md) includes provenance. The separate [documentation patch](acceptance/upstream-doc.patch) corrects the construction-panic contract and the write_nested error link without changing code.
+[Upstream review](acceptance/UPSTREAM-REVIEW.md) records the final commit, debug/release replay, exact counts and the supplied 2026-10-13 upstream checkpoint. [PR text](acceptance/UPSTREAM-PR.md) includes provenance. The separate [documentation patch](acceptance/upstream-doc.patch) corrects the construction-panic contract and the write_nested error link without changing code.
 
 | Item | Class | Result |
 |---|---|---|
@@ -17,11 +17,15 @@ The package’s own files are licensed under **Apache-2.0 OR MIT**; see [LICENSE
 | F4 | DOCUMENTED | Duplicate construction keys panic; tag values remain structural. |
 | F5 | AMBIGUOUS | Decoder canonical-only restrictions are implemented, but not stated explicitly in the reader docs. |
 | F6 | AMBIGUOUS | README uses “canonical order” without naming the profile; code resolves it to RFC 8949 bytewise order. |
-| F7 | DOCUMENTATION DEFECT | cbor_map_options docs promise writing failure for duplicates, but construction panics; write_nested docs link DecoderError instead of EncoderError; no normative wire deviation. |
+| F7 | DOC MISMATCH | cbor_map_options docs promise writing failure for duplicates, but construction panics; write_nested docs link DecoderError instead of EncoderError; no normative wire deviation. |
 | F8 | KNOWN | #788 string-length hardening is present; native and simulated-width tests reject announced 2^32-byte strings. |
 
 No reproduced DEVIATION from a normative requirement in the declared codec slice was found. AMBIGUOUS means the documented applicability or contract is incomplete; it does not assert that a normative clause permits two key orders under the same selected profile.
 Existing nesting coverage includes `test_read_too_much_nesting_error` through private Reader methods, and `test_write_single_levels`, `test_write_nested_map_levels`, `test_write_unbalanced_nested_containers` and `test_write_overly_nested` through private Writer methods. `test_write_nested_map_levels` and `test_write_overly_nested` also assert that `None` succeeds. The remaining gaps are the public `read`/`write` wrappers’ default constant (127), the `None` pass-through of `read_nested`/`write_nested`, and the tag branch’s nesting budget.
+
+`None` disables nesting checks by documented intent: [OpenSK PR #373](https://github.com/google/OpenSK/pull/373), merged 2021-09-09, explicitly preserves `{read,write}_nested(..., None)` for users who want to skip nesting checks. The supplied body excerpt is retained in the final receipt. Tests at 128 arrays are bounded evidence for that intent; they do not establish resource safety for arbitrary depth.
+
+Tag accounting is the one open contract question: the tests pin one level; maintainers are asked to confirm or reject it.
 
 `libraries/cbor/examples/cbor.rs` is an asserting program that `cargo test` builds but does not run; run by the review, it detects none of the 19 survivors.
 
@@ -68,8 +72,10 @@ export ACCEPTANCE_FORMAT="$PWD/validator"
 ./run_all.sh
 ```
 
-Clone commands describe setup; `run_all.sh` never accesses the network. Prerequisites: git, Python 3.14, rustup with Rust 1.99.0 and rustfmt from nightly-2026-06-01. The OpenSK repository pins nightly-2026-06-03; the test compiler uses 1.99.0 and the formatter uses the installed June 1 nightly with edition 2024. The two source commits must already exist in the enclosing repository: the subject above and develop `bd1ed2337834311a8c3649835a569cd00ec7a757`. The codec has no dependencies. Builds use local `.cargo-home` and target directories, `--offline`, and `RUSTFLAGS="--cap-lints warn"`.
+Clone commands describe setup; `run_all.sh` never accesses the network. Prerequisites: git, Python 3.14, rustup with Rust 1.99.0 and rustfmt from nightly-2026-06-01. The OpenSK repository pins nightly-2026-06-03; the test compiler uses 1.99.0 and the formatter uses the installed June 1 nightly with edition 2024. The subject and develop commits must already exist in the enclosing repository: the subject above and develop `79e85b9a72a1ad99745e0d07aec9708d2f7ad6a9`. The codec has no dependencies. Builds use local `.cargo-home` and target directories, `--offline`, and `RUSTFLAGS="--cap-lints warn"`.
 
 Tested host: macOS 26.6.2 (25G83), aarch64; Python 3.14. Git root discovery uses `git rev-parse --show-toplevel`. Without `published/opensk-git`, the subject is the enclosing repository's `libraries/cbor`, and history comes from that repository. The subject commit is compared with the pin; any difference is printed and saved in `acceptance/evidence/gen/subject-check.json`. The scripts never fetch. A standalone pilot uses `published/opensk-git` and `published/sk-cbor-src` only when present. Validator revision differences fail explicitly.
 
-[Publication manifest](PUBLISH.md) lists the exact files to copy. [Downstream coverage](acceptance/MISSING-TESTS.md#downstream-coverage) distinguishes the local suite's 19 survivors from OpenSK integration tests and the existing fuzz oracle. Captured [fork-layout replay evidence](acceptance/evidence/gen/fork-replay.json) records the offline publication-layout check.
+[Publication manifest](PUBLISH.md) lists the exact files to copy. [Downstream coverage](acceptance/MISSING-TESTS.md#downstream-coverage) distinguishes the local suite's 19 survivors from OpenSK integration tests and the existing fuzz oracle. Captured [fork-layout replay evidence](acceptance/evidence/gen/fork-replay.json) (historical: the 2026-10-09 run of the earlier 12-test patch) records the offline publication-layout check.
+
+If the standalone history copy lacks the newer develop commit, set `ACCEPTANCE_PR_REPO=/path/to/local/OpenSK` to a local repository containing it. This is used only for offline patch archives and does not change the pinned subject.

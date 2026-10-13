@@ -1,0 +1,5 @@
+{
+  "command": "git ls-tree -r f3ee26d libraries/cbor/src; git ls-tree -r 79e85b9 libraries/cbor/src",
+  "identical": true,
+  "tree_entries": "100644 blob 0cc4902ce4538a54e81145a7ad8b5e65c058579e\tlibraries/cbor/src/lib.rs\n100644 blob e59ceccb38a7d567c6e7cdae871a60a04f9f995a\tlibraries/cbor/src/macros.rs\n100644 blob a1cac54b9652d0d9470f48b134d8cc18394f9609\tlibraries/cbor/src/reader.rs\n100644 blob da0804963adfd33314796174b3c1b8e3d045b4d7\tlibraries/cbor/src/values.rs\n100644 blob 82f2aade7e5901a5a0ac7bdf019676787ef4f6e2\tlibraries/cbor/src/writer.rs\n"
+}

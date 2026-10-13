@@ -1,0 +1,18 @@
+$ cargo test --offline --doc --release
+CWD <replay>/mutant-cbor
+
+running 5 tests
+test src/macros.rs - macros::destructure_cbor_map (line 39) ... ok
+test src/macros.rs - macros::cbor_bytes_lit (line 348) ... ok
+test src/macros.rs - macros::cbor_array (line 233) ... ok
+test src/macros.rs - macros::cbor_map (line 146) ... ok
+test src/macros.rs - macros::cbor_map_options (line 185) ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.78s
+
+all doctests ran in 0.80s; merged doctests compilation took 0.03s
+   Compiling sk-cbor v0.1.2 (<replay>/mutant-cbor)
+    Finished `release` profile [optimized] target(s) in 0.18s
+   Doc-tests sk_cbor
+
+EXIT 0

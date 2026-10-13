@@ -1,0 +1,26 @@
+$ cargo test --offline --lib values::test::test_value_ordering_map_tail -- --exact
+CWD <replay>/mutant-cbor
+
+running 1 test
+test values::test::test_value_ordering_map_tail ... FAILED
+
+failures:
+
+---- values::test::test_value_ordering_map_tail stdout ----
+
+thread 'values::test::test_value_ordering_map_tail' (43807003) panicked at src/values.rs:747:9:
+assertion failed: cbor_map! { 0 => 0, 1 => 1 } < cbor_map! { 0 => 0, 1 => 2 }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    values::test::test_value_ordering_map_tail
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 88 filtered out; finished in 0.00s
+
+   Compiling sk-cbor v0.1.2 (<replay>/mutant-cbor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.21s
+     Running unittests src/lib.rs (<replay>/mutation-target/debug/deps/sk_cbor-9743f3a06bbce592)
+error: test failed, to rerun pass `--lib`
+
+EXIT 101

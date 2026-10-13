@@ -22,7 +22,7 @@ external = ["RFC 8949", "RFC 7049", "CTAP 2.1 §8", "Pinned crate doc comments a
 clauses_total = 113
 claims_total = 113
 denominator = "slice"
-slice_note = "Whole public API plus the declared codec standard slice; gaps remain explicit."
+slice_note = "Whole public API plus the declared codec standard slice; gaps remain explicit. Final PR f6666ff adds 10 tests; M033 is evidenced downstream; M099 is not proposed upstream."
 
 [conformance]
 standard = "cbor-api-slice"

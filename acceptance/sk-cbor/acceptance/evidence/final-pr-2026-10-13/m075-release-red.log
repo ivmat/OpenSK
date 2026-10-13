@@ -1,0 +1,26 @@
+$ cargo test --offline --lib --release values::test::test_value_ordering_array_tail -- --exact
+CWD <replay>/mutant-cbor
+
+running 1 test
+test values::test::test_value_ordering_array_tail ... FAILED
+
+failures:
+
+---- values::test::test_value_ordering_array_tail stdout ----
+
+thread 'values::test::test_value_ordering_array_tail' (43806171) panicked at src/values.rs:742:9:
+assertion failed: cbor_array![0, 1] < cbor_array![0, 2]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    values::test::test_value_ordering_array_tail
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 88 filtered out; finished in 0.00s
+
+   Compiling sk-cbor v0.1.2 (<replay>/mutant-cbor)
+    Finished `release` profile [optimized] target(s) in 0.61s
+     Running unittests src/lib.rs (<replay>/mutation-target/release/deps/sk_cbor-6e63099119ff3362)
+error: test failed, to rerun pass `--lib`
+
+EXIT 101

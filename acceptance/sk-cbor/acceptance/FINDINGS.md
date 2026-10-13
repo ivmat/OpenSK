@@ -9,7 +9,7 @@
 | F4 | DOCUMENTED | Duplicate construction keys panic; tag values remain structural. |
 | F5 | AMBIGUOUS | Decoder canonical-only restrictions are implemented, but not stated explicitly in the reader docs. |
 | F6 | AMBIGUOUS | README uses “canonical order” without naming the profile; code resolves it to RFC 8949 bytewise order. |
-| F7 | DOCUMENTATION DEFECT | cbor_map_options docs promise writing failure for duplicates, but construction panics; write_nested docs link DecoderError instead of EncoderError; no normative wire deviation. |
+| F7 | DOC MISMATCH | cbor_map_options docs promise writing failure for duplicates, but construction panics; write_nested docs link DecoderError instead of EncoderError; no normative wire deviation. |
 | F8 | KNOWN | #788 string-length hardening is present; native and simulated-width tests reject announced 2^32-byte strings. |
 
 No reproduced DEVIATION from a normative requirement in the declared codec slice was found. AMBIGUOUS means the documented applicability or contract is incomplete; it does not assert that a normative clause permits two key orders under the same selected profile.
@@ -58,7 +58,7 @@ Actual: Both default boundaries match; new tests expose shipped-suite omissions.
 
 Reproduce: `./run_all.sh`, then inspect [minimal-repros.json](evidence/gen/minimal-repros.json), the applicable vector row, and the named mutant probe.
 
-Known-item check: The supplied #373 change establishes the default limit. M021/M035 check its exact boundary.
+Known-item check: PR #373, merged 2021-09-09, documents the default limit and explicitly preserves None to skip nesting checks; see evidence/final-pr-2026-10-13/receipt.json. M021/M035 check the default boundary.
 
 Confidence: high for the observed bounded behaviour; the documented profile interpretation is limited as stated.
 
@@ -122,7 +122,7 @@ Actual: Construction panics; EncoderError::DuplicateMapKey has no reachable publ
 
 Reproduce: `./run_all.sh`, then inspect [minimal-repros.json](evidence/gen/minimal-repros.json), the applicable vector row, and the named mutant probe.
 
-Known-item check: #639 removed the old writer duplicate tests and moved duplicate rejection into Value::map. The remaining macro prose is stale. The separate upstream-doc.patch corrects both documentation defects without code changes. No normative wire deviation is claimed.
+Known-item check: #639 removed the old writer duplicate tests and moved duplicate rejection into Value::map. The remaining macro prose is stale. The separate upstream-doc.patch corrects both documentation mismatches without code changes. No normative wire deviation is claimed.
 
 Confidence: high for the observed bounded behaviour; the documented profile interpretation is limited as stated.
 
@@ -149,3 +149,13 @@ Major types 0–7 within the declared model; additional arguments 24–27; reser
 The independent reference comparison used seed 8949, 1094 generated values and 363057 unique byte inputs. 149157 succeeded and 213900 returned errors. Acceptance/rejection agreed for every input. Exact round-trip bytes and independent decoded structures agreed for every accepted input. No native panic or hang occurred. Every one- and two-byte input was included. Longer cases used generated values, truncations, insertion/deletion/substitution variants, boundary strings and fixed-seed random bytes. Full split-stream equivalence is not applicable because no streaming API exists.
 
 The public `read_nested(..., None)` escape hatch is only tested at bounded depths. Arbitrarily deep recursion and memory exhaustion are not covered by this finite run. The existing fuzz target checks accepted decode/write byte identity; the independent comparison does not depend on that target or its corpus.
+
+## Test dispositions and open contract
+
+Evidenced by 24 existing CTAP tests in `libraries/opensk`, including `ctap::test::test_resident_process_make_credential`; M033 kills the same 24 tests in all three checked configurations. This is a gap only in sk-cbor’s own suite, not in the repository; not proposed upstream.
+
+Not proposed upstream: M099 survives the codec suite, but `macros.rs:29` requires keys in “increasing order”, without saying “strictly”, and `destructure_cbor_map!` runs this assertion only under `cfg(test)`. The package probe records the current implementation, not a documented strict-key contract.
+
+`None` disables nesting checks by documented intent: [OpenSK PR #373](https://github.com/google/OpenSK/pull/373), merged 2021-09-09, explicitly preserves `{read,write}_nested(..., None)` for users who want to skip nesting checks. The supplied body excerpt is retained in the final receipt. Tests at 128 arrays are bounded evidence for that intent; they do not establish resource safety for arbitrary depth.
+
+Tag accounting remains undocumented. The proposed tag tests pin exactly one nesting level by rejecting Some(0) and accepting Some(1); maintainers are asked to confirm or reject this contract. The zero- and two-level controls are red in both profiles; see [final receipts](evidence/final-pr-2026-10-13/receipt.json).

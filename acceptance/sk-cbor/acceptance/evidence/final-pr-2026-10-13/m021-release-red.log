@@ -1,0 +1,26 @@
+$ cargo test --offline --lib --release reader::test::test_read_default_nesting_boundary -- --exact
+CWD <replay>/mutant-cbor
+
+running 1 test
+test reader::test::test_read_default_nesting_boundary ... FAILED
+
+failures:
+
+---- reader::test::test_read_default_nesting_boundary stdout ----
+
+thread 'reader::test::test_read_default_nesting_boundary' (43795946) panicked at src/reader.rs:761:9:
+assertion failed: read(&bytes).is_ok()
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    reader::test::test_read_default_nesting_boundary
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 88 filtered out; finished in 0.00s
+
+   Compiling sk-cbor v0.1.2 (<replay>/mutant-cbor)
+    Finished `release` profile [optimized] target(s) in 0.62s
+     Running unittests src/lib.rs (<replay>/mutation-target/release/deps/sk_cbor-6e63099119ff3362)
+error: test failed, to rerun pass `--lib`
+
+EXIT 101

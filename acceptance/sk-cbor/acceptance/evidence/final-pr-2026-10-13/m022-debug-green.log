@@ -1,0 +1,13 @@
+$ cargo test --offline --lib reader::test::test_read_nested_unlimited -- --exact
+CWD <replay>/mutant-cbor
+
+running 1 test
+test reader::test::test_read_nested_unlimited ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 88 filtered out; finished in 0.00s
+
+   Compiling sk-cbor v0.1.2 (<replay>/mutant-cbor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.16s
+     Running unittests src/lib.rs (<replay>/mutation-target/debug/deps/sk_cbor-9743f3a06bbce592)
+
+EXIT 0
